@@ -8,6 +8,21 @@ import (
 	"net/http"
 )
 
+type JsonResponse struct {
+	Jsonrpc string `json:"jsonrpc"`
+	Result  struct {
+		Random struct {
+			Data           []int  `json:"data"`
+			CompletionTime string `json:"completionTime"`
+		} `json:"random"`
+		BitsUsed      int `json:"bitsUsed"`
+		BitsLeft      int `json:"bitsLeft"`
+		RequestsLeft  int `json:"requestsLeft"`
+		AdvisoryDelay int `json:"advisoryDelay"`
+	} `json:"result"`
+	ID int `json:"id"`
+}
+
 func main() {
 	httpposturl := "https://api.random.org/json-rpc/4/invoke"
 	fmt.Println("HTTP JSON POST URL:", httpposturl)
@@ -16,7 +31,7 @@ func main() {
 		"jsonrpc": "2.0",
 		"method": "generateIntegers",
 		"params": {
-			"apiKey": "**********************",
+			"apiKey": "*************************",
 			"n": 6,
 			"min": 1,
 			"max": 100,
@@ -40,8 +55,30 @@ func main() {
 	fmt.Println("response Body:", string(body[45]))
 	fmt.Println("response Body:", string(body))
 
-	json.NewDecoder(response.Body).Decode(&res)
+	checkVaild := json.Valid(jsonData)
 
-	fmt.Println(response["form"])
+	if checkVaild {
+		fmt.Println("Json valid")
+	}
+
+	var anwser map[string]interface{}
+	json.Unmarshal([]byte(body), &anwser)
+	fmt.Printf("%#v\n", anwser)
+	fmt.Printf("------------------------------")
+	fmt.Printf("%#v\n", anwser["result"])
+
+	// for k, v := range anwser {
+	// 	fmt.Printf("key is %v and val %v\n Type: %T\n", k, v, v)
+	// }
+	fmt.Printf("****************************************************************************")
+	u := JsonResponse{}
+
+	json.Unmarshal([]byte(body), &u)
+
+	// for i := 0; i < 1; {
+	// 	fmt.Printf("Code is: %s", u.Result.Random.Data[i])
+	// }
+
+	}
 
 }
