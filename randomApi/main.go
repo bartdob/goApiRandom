@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"math"
 	"net/http"
 )
 
@@ -31,7 +32,7 @@ func main() {
 		"jsonrpc": "2.0",
 		"method": "generateIntegers",
 		"params": {
-			"apiKey": "*************************",
+			"apiKey": "0a48fc40-5066-4794-8dc0-036e41d09c63",
 			"n": 6,
 			"min": 1,
 			"max": 100,
@@ -63,22 +64,32 @@ func main() {
 
 	var anwser map[string]interface{}
 	json.Unmarshal([]byte(body), &anwser)
-	fmt.Printf("%#v\n", anwser)
-	fmt.Printf("------------------------------")
-	fmt.Printf("%#v\n", anwser["result"])
 
-	// for k, v := range anwser {
-	// 	fmt.Printf("key is %v and val %v\n Type: %T\n", k, v, v)
-	// }
-	fmt.Printf("****************************************************************************")
 	u := JsonResponse{}
 
 	json.Unmarshal([]byte(body), &u)
 
-	// for i := 0; i < 1; {
-	// 	fmt.Printf("Code is: %s", u.Result.Random.Data[i])
-	// }
+	var suma float64
 
+	for i := range u.Result.Random.Data {
+		fmt.Println(i, u.Result.Random.Data[i])
+		suma = suma + float64(u.Result.Random.Data[i])
 	}
+
+	fmt.Println("suma: ", suma)
+
+	fmt.Println("standard deviation")
+
+	var mean, sd float64
+
+	mean = suma / float64(len(u.Result.Random.Data))
+
+	for j := range u.Result.Random.Data {
+		sd += math.Pow(float64(u.Result.Random.Data[j])-mean, 2)
+	}
+
+	sd = math.Sqrt(sd / 10)
+
+	fmt.Println("The Standard Deviation is : ", sd)
 
 }
