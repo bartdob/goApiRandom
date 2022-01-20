@@ -32,7 +32,7 @@ func main() {
 		"jsonrpc": "2.0",
 		"method": "generateIntegers",
 		"params": {
-			"apiKey": "0a48fc40-5066-4794-8dc0-036e41d09c63",
+			"apiKey": "password",
 			"n": 6,
 			"min": 1,
 			"max": 100,
