@@ -88,8 +88,8 @@ func main() {
 		sd += math.Pow(float64(u.Result.Random.Data[j])-mean, 2)
 	}
 
-	sd = math.Sqrt(sd / 10)
+	sd = math.Sqrt(sd / float64(len(u.Result.Random.Data)))
 
-	fmt.Println("The Standard Deviation is : ", sd)
+	fmt.Println("The Standard Deviation is : ", sd, "n:", float64(len(u.Result.Random.Data)))
 
 }
